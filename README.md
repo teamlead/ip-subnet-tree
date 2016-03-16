@@ -1,6 +1,8 @@
 IpSubnetTree
 ============
 
+[![Build Status](https://travis-ci.org/x25/ip-subnet-tree.svg?branch=master)](https://travis-ci.org/x25/ip-subnet-tree)
+
 An implementation of IP radix trie for CIDR Lookups. Current version supports only IPv4 addresses.
 
 ## Usage:
@@ -24,7 +26,7 @@ assertEquals("WAP Tele2", tree.find("77.219.59.9"));
 assertEquals("Unknown",   tree.find("10.0.0.1"));
 ```
 
-A realistic example using the Spring Framework and csv file in [ngx_http_geo_module](http://nginx.org/en/docs/http/ngx_http_geo_module.html) format:
+A realistic example using the Spring Framework and a csv file in [ngx_http_geo_module](http://nginx.org/en/docs/http/ngx_http_geo_module.html) format:
 
 ```java
 import com.github.x25.tree.IpSubnetTree;
@@ -50,7 +52,7 @@ public class GeoIpService {
     public void postConstruct() throws IOException {
 
         // Nginx geo module config format, e.g.:
-        // 127.0.0.1 2    foo;
+        // 127.0.0.1      foo;
         // 192.168.1.0/24 bar;
         // 10.1.0.0/16    baz;
         Resource resource = resourceLoader.getResource("classpath:" + "path/to/db.csv");
