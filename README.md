@@ -1,7 +1,8 @@
 IpSubnetTree
 ============
 
-[![Build Status](https://travis-ci.org/x25/ip-subnet-tree.svg?branch=master)](https://travis-ci.org/x25/ip-subnet-tree)
+[![Build Status](http://img.shields.io/travis/x25/ip-subnet-tree/master.svg?style=flat-square)](https://travis-ci.org/x25/ip-subnet-tree)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.x25/ip-subnet-tree/badge.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.github.x25/ip-subnet-tree/)
 
 An implementation of IP radix trie for CIDR Lookups. Current version supports only IPv4 addresses.
 
@@ -86,6 +87,26 @@ public class GeoIpService {
         return tree.find(ip);
     }
 }
+```
+
+## Installation:
+
+This library is available on Maven Central.
+
+Apache Maven dependency:
+
+```xml
+<dependency>
+    <groupId>com.github.x25</groupId>
+    <artifactId>ip-subnet-tree</artifactId>
+    <version>1.0.2</version>
+</dependency>
+```
+
+Gradle/Grails dependency:
+
+```
+compile 'com.github.x25:ip-subnet-tree:1.0.2'
 ```
 
 ## Tests
