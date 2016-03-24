@@ -34,7 +34,7 @@ public class IpSubnetTree<V> {
 
     /**
      * @param block eg. 24
-     * @return eg. 0.0.0.255
+     * @return eg. 255.255.255.0
      */
     private static int getMaskByBlock(long block) {
         return block > 0 ? 0x80000000 >> (block - 1) : 0;
