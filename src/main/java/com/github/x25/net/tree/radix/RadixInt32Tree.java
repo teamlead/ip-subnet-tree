@@ -1,15 +1,13 @@
-package com.github.x25.net.tree;
+package com.github.x25.net.tree.radix;
+
+import com.github.x25.net.tree.radix.node.Node;
 
 public class RadixInt32Tree<V> {
 
-    private RadixTreeNode<V> root;
-
-    public RadixInt32Tree() {
-        root = new RadixTreeNode<V>();
-    }
+    private final Node<V> root = new Node<V>();
 
     public void insert(int key, int mask, V value) {
-        RadixTreeNode<V> node, next;
+        Node<V> node, next;
         long bit = 0x80000000L;
 
         node = root;
@@ -33,11 +31,7 @@ public class RadixInt32Tree<V> {
         }
 
         while ((bit & mask) != 0) {
-            next = new RadixTreeNode<V>();
-
-            next.setRight(null);
-            next.setLeft(null);
-            next.setValue(null);
+            next = new Node<V>();
 
             if ((key & bit) != 0) {
                 node.setRight(next);
@@ -56,7 +50,7 @@ public class RadixInt32Tree<V> {
     public V find(int key) {
         long bit = 0x80000000L;
         V value;
-        RadixTreeNode<V> node;
+        Node<V> node;
 
         value = null;
         node = root;

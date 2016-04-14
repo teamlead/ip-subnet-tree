@@ -4,6 +4,9 @@ import com.github.x25.net.tree.IpSubnetTree;
 import com.github.x25.net.Utils;
 import junit.framework.TestCase;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class IpSubnetTreeTest extends TestCase {
 
     public void testExample()
@@ -103,11 +106,5 @@ public class IpSubnetTreeTest extends TestCase {
         assertEquals("255.255.255.255", Utils.intToIpAddr(Utils.ipAddrToInt("255.255.255.255")));
         assertEquals("1.127.128.255", Utils.intToIpAddr(Utils.ipAddrToInt("1.127.128.255")));
         assertEquals("0.0.0.0", Utils.intToIpAddr(Utils.ipAddrToInt("0.0.0.0")));
-    }
-
-    public void testTrim()
-    {
-        String foo = " dasd;";
-        assertEquals("dasd", foo.replaceFirst(";$", "").trim());
     }
 }

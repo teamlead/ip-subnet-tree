@@ -1,14 +1,16 @@
 package com.github.x25.net.tree;
 
 import com.github.x25.net.Utils;
+import com.github.x25.net.tree.radix.RadixInt32Tree;
 
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class IpSubnetTree<V> {
 
-    private RadixInt32Tree<V> tree;
-    private V defaultValue;
+    private final RadixInt32Tree<V> tree = new RadixInt32Tree<V>();
+
+    private volatile V defaultValue;
 
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
@@ -18,10 +20,6 @@ public class IpSubnetTree<V> {
 
     private void releaseWriteLock() {
         readWriteLock.writeLock().unlock();
-    }
-
-    public IpSubnetTree() {
-        tree = new RadixInt32Tree<V>();
     }
 
     public V getDefaultValue() {
