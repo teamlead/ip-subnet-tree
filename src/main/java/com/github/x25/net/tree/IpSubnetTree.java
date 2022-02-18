@@ -68,7 +68,7 @@ public class IpSubnetTree<V> {
         int pos = cidrNotation.indexOf('/');
 
         if (pos == -1) {
-            insert(cidrNotation + "/255", value);
+            insert(cidrNotation + "/32", value);
             return;
         }
 
