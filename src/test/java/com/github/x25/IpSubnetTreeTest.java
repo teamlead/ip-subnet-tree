@@ -41,6 +41,16 @@ public class IpSubnetTreeTest extends TestCase {
         assertEquals("X", tree.find("128.0.0.1"));
     }
 
+    public void testNoCidr() {
+        IpSubnetTree<String> tree = new IpSubnetTree<String>();
+        tree.setDefaultValue("X");
+        tree.insert("129.0.0.7", "F");
+
+        assertEquals("X", tree.find("129.0.0.6"));
+        assertEquals("F", tree.find("129.0.0.7"));
+        assertEquals("X", tree.find("129.0.0.6"));
+    }
+
     public void testCidr() {
         IpSubnetTree<Integer> tree = new IpSubnetTree<Integer>();
         for (int i = 0; i < 255; i++) {
