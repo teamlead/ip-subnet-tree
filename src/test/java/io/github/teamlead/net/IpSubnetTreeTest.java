@@ -1,11 +1,13 @@
-package com.github.x25;
+package io.github.teamlead.net;
 
-import com.github.x25.net.tree.IpSubnetTree;
-import com.github.x25.net.Utils;
-import junit.framework.TestCase;
+import io.github.teamlead.net.tree.IpSubnetTree;
+import org.junit.jupiter.api.Test;
 
-public class IpSubnetTreeTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.*;
 
+public class IpSubnetTreeTest {
+
+    @Test
     public void testExample()
     {
         IpSubnetTree<String> tree = new IpSubnetTree<String>();
@@ -21,6 +23,7 @@ public class IpSubnetTreeTest extends TestCase {
         assertEquals("Unknown", tree.find("10.0.0.1"));
     }
 
+    @Test
     public void testBasic() {
         IpSubnetTree<String> tree = new IpSubnetTree<String>();
         tree.setDefaultValue("X");
@@ -41,6 +44,7 @@ public class IpSubnetTreeTest extends TestCase {
         assertEquals("X", tree.find("128.0.0.1"));
     }
 
+    @Test
     public void testNoCidr() {
         IpSubnetTree<String> tree = new IpSubnetTree<String>();
         tree.setDefaultValue("X");
@@ -51,6 +55,7 @@ public class IpSubnetTreeTest extends TestCase {
         assertEquals("X", tree.find("129.0.0.6"));
     }
 
+    @Test
     public void testCidr() {
         IpSubnetTree<Integer> tree = new IpSubnetTree<Integer>();
         for (int i = 0; i < 255; i++) {
@@ -58,10 +63,11 @@ public class IpSubnetTreeTest extends TestCase {
         }
         for (int i = 0; i < 255; i++) {
             assertEquals(i, (int) tree.find(i + ".127.0.255"));
-            assertEquals(null, tree.find(i + ".128.0.255"));
+            assertNull(tree.find(i + ".128.0.255"));
         }
     }
 
+    @Test
     public void testRange() {
         IpSubnetTree<Integer> tree = new IpSubnetTree<Integer>();
         for (int i = 0; i < 255; i++) {
@@ -69,10 +75,11 @@ public class IpSubnetTreeTest extends TestCase {
         }
         for (int i = 0; i < 255; i++) {
             assertEquals(i, (int) tree.find(i + ".127.0.255"));
-            assertEquals(null, tree.find(i + ".128.0.255"));
+            assertNull(tree.find(i + ".128.0.255"));
         }
     }
 
+    @Test
     public void testOverride() {
         IpSubnetTree<String> test = new IpSubnetTree<String>();
 
@@ -83,6 +90,7 @@ public class IpSubnetTreeTest extends TestCase {
         assertEquals("bar", test.find("1.2.3.4"));
     }
 
+    @Test
     public void testDotAll() {
         IpSubnetTree<String> foo = new IpSubnetTree<String>();
 
@@ -98,16 +106,18 @@ public class IpSubnetTreeTest extends TestCase {
         assertEquals("bar", bar.find("255.255.255.255"));
     }
 
+    @Test
     public void testIllegalArgument() {
         IpSubnetTree<Boolean> foo = new IpSubnetTree<Boolean>();
         try {
             foo.insert("abc", true);
-            assertTrue(false);
+            fail();
         } catch (IllegalArgumentException e) {
             assertTrue(true);
         }
     }
 
+    @Test
     public void testUtils() {
         assertEquals("255.128.127.1", Utils.intToIpAddr(Utils.ipAddrToInt("255.128.127.1")));
         assertEquals("255.255.255.255", Utils.intToIpAddr(Utils.ipAddrToInt("255.255.255.255")));
@@ -115,6 +125,7 @@ public class IpSubnetTreeTest extends TestCase {
         assertEquals("0.0.0.0", Utils.intToIpAddr(Utils.ipAddrToInt("0.0.0.0")));
     }
 
+    @Test
     public void testTrim()
     {
         String foo = " dasd;";

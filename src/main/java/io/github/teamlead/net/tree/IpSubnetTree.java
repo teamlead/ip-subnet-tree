@@ -1,10 +1,20 @@
-package com.github.x25.net.tree;
+package io.github.teamlead.net.tree;
 
-import com.github.x25.net.Utils;
+import io.github.teamlead.net.Utils;
 
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+
+/**
+ * Represents a data structure for efficient IP subnet storage and lookup. This class
+ * utilizes a radix tree (trie) for storing values associated with IP subnets. It allows
+ * for quick retrieval of values based on IP address inputs, supporting both CIDR notation
+ * and range insertion for subnet definitions. It is designed with concurrency in mind,
+ * employing a {@link java.util.concurrent.locks.ReadWriteLock} to manage concurrent access.
+ *
+ * @param <V> the type of value that the IP subnets will be associated with in this tree
+ */
 public class IpSubnetTree<V> {
 
     private RadixInt32Tree<V> tree;
@@ -20,14 +30,28 @@ public class IpSubnetTree<V> {
         readWriteLock.writeLock().unlock();
     }
 
+    /**
+     * Constructs a new IPSubnetTree. Initializes the internal data structures required
+     * for IP subnet storage and retrieval.
+     */
     public IpSubnetTree() {
         tree = new RadixInt32Tree<V>();
     }
 
+    /**
+     * Returns the default value to be used when no specific value is found for an IP address lookup.
+     *
+     * @return the default value
+     */
     public V getDefaultValue() {
         return defaultValue;
     }
 
+    /**
+     * Sets the default value to be returned when no specific value is found for an IP address lookup.
+     *
+     * @param value the default value to set
+     */
     public void setDefaultValue(V value) {
         defaultValue = value;
     }
@@ -58,8 +82,10 @@ public class IpSubnetTree<V> {
     }
 
     /**
-     * @param cidrNotation A CIDR-notation string, e.g. "192.168.0.0/16"
-     * @param value        A value
+     * Inserts a value associated with a subnet defined in CIDR notation into the IP subnet tree.
+     *
+     * @param cidrNotation A CIDR-notation string, e.g., "192.168.0.0/16", representing the IP subnet
+     * @param value        The value to associate with the specified IP subnet
      */
     public void insert(String cidrNotation, V value) {
         if (value == null)
@@ -83,9 +109,11 @@ public class IpSubnetTree<V> {
 
 
     /**
-     * @param dotDecimalRangeStart A dot-decimal notation range start string, e.g. "192.168.0.0"
-     * @param dotDecimalRangeEnd   A dot-decimal notation range end string, e.g. "192.168.255.255"
-     * @param value                A value
+     * Inserts a value associated with an IP range specified in dot-decimal notation.
+     *
+     * @param dotDecimalRangeStart A dot-decimal notation string representing the start of the IP range, e.g., "192.168.0.0"
+     * @param dotDecimalRangeEnd   A dot-decimal notation string representing the end of the IP range, e.g., "192.168.255.255"
+     * @param value                The value to associate with the specified IP range
      */
     public void insert(String dotDecimalRangeStart, String dotDecimalRangeEnd, V value) {
         if (value == null)
@@ -97,7 +125,7 @@ public class IpSubnetTree<V> {
         while (end >= start) {
             long maxBlock = calcMaxBlock(start);
             long maxDiff = (int) (32 - Math.floor(Math.log(end - start + 1) / Math.log(2)));
-            maxBlock = maxBlock > maxDiff ? maxBlock : maxDiff;
+            maxBlock = Math.max(maxBlock, maxDiff);
             acquireWriteLock();
             tree.insert((int) start, getMaskByBlock(maxBlock), value);
             releaseWriteLock();
@@ -106,8 +134,10 @@ public class IpSubnetTree<V> {
     }
 
     /**
-     * @param dotDecimalNotation A quad-dotted notation string, e.g. "192.168.5.25"
-     * @return A Value
+     * Finds and returns the value associated with a specific IP address.
+     *
+     * @param dotDecimalNotation A quad-dotted notation string, e.g., "192.168.5.25", representing the IP address
+     * @return The value associated with the specified IP address or the default value if no association exists
      */
     public V find(String dotDecimalNotation) {
         V value = tree.find(Utils.ipAddrToInt(dotDecimalNotation));
